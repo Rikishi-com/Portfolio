@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head>
-      <title>server_recovery_commands</title>
+      <title>php_setup_and_verification</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -19,78 +19,101 @@
   document.addEventListener("DOMContentLoaded", function () {
     // your code here
   });
-</script></head><body for="html-export">
+</script></head><body for="html-export"><?php include "header.html"; ?>
     
     
       <div class="crossnote markdown-preview  ">
       
-<h1 id="linuxサーバ復旧時の対応と使用コマンドまとめ">Linuxサーバ復旧時の対応と使用コマンドまとめ </h1>
-<p>このページでは，Amazon Linux 2023上でWebサーバ（Apache + PHP + MariaDB）を構築・復旧する際に使用した手順とコマンドをまとめます．<br><br>
-インスタンスはEC2で稼働しており，firewalldやphpMyAdminなどを追加設定した内容も含まれます．</p>
+<h1 id="phpの動作確認と基本的な設定">PHPの動作確認と基本的な設定 </h1>
+<p>このページでは，Apacheサーバ上でPHPを動作させるための確認手順と，MariaDB，phpMyAdminの設定をまとめます．<br><br>
+この手順は <code>/var/www/html</code> をドキュメントルートとし，ApacheとPHPが正常にインストール・起動されていることを前提とします．</p>
 <hr>
-<h2 id="1-apacheの復旧と起動">1. Apacheの復旧と起動 </h2>
-<h3 id="apacheのインストール">Apacheのインストール </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> httpd
-</code></pre><h3 id="apacheの起動自動起動設定">Apacheの起動・自動起動設定 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl start httpd
-<span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> httpd
-</code></pre><h3 id="apacheの状態確認">Apacheの状態確認 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl status httpd
-<span class="token function">sudo</span> systemctl is-enabled httpd
-</code></pre><hr>
-<h2 id="2-phpの復旧と動作確認">2. PHPの復旧と動作確認 </h2>
-<h3 id="phpinfoファイルの作成">phpinfoファイルの作成 </h3>
+<h2 id="1-phpの動作確認">1. PHPの動作確認 </h2>
+<h3 id="phpinfoで環境確認"><code>phpinfo()</code>で環境確認 </h3>
+<ul>
+<li><code>/var/www/html</code> 配下に <code>phpinfo.php</code> というファイルを作成する．</li>
+</ul>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">nano</span> /var/www/html/phpinfo.php
-</code></pre><pre data-role="codeBlock" data-info="php" class="language-php php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+</code></pre><p><code>nano</code>-テキストエディタ．<code>vim</code>,<code>emacs</code>より操作が直感的<br>
+<br><br>
+例：ファイルを開く（なければ作成）</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">nano</span> filename.txt
+</code></pre><br>
+以下の内容を記述して保存する．
+<pre data-role="codeBlock" data-info="php" class="language-php php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 <span class="token function">phpinfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token delimiter important">?&gt;</span></span>
-</code></pre><h3 id="hello-worldテスト">Hello Worldテスト </h3>
+</code></pre><br>
+ブラウザで以下にアクセスする：
+<pre data-role="codeBlock" data-info="" class="language-text"><code>http://[EC2のパブリックIP]/phpinfo.php
+</code></pre><ul>
+<li>PHPの詳細情報ページが表示されれば，PHPは正しくインストールされている．</li>
+</ul>
+<hr>
+<h3 id="hello-world-をphpで表示"><code>Hello World</code> をPHPで表示 </h3>
+<ul>
+<li><code>/var/www/html/hello.php</code> というファイルを作成する：</li>
+</ul>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">nano</span> /var/www/html/hello.php
-</code></pre><pre data-role="codeBlock" data-info="php" class="language-php php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+</code></pre><br>
+以下のコードを記述：
+<pre data-role="codeBlock" data-info="php" class="language-php php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 <span class="token keyword keyword-echo">echo</span> <span class="token string double-quoted-string">"Hello World"</span><span class="token punctuation">;</span>
 <span class="token delimiter important">?&gt;</span></span>
-</code></pre><hr>
-<h2 id="3-mariadbの再インストールと初期設定">3. MariaDBの再インストールと初期設定 </h2>
-<h3 id="mariadbのインストール">MariaDBのインストール </h3>
+</code></pre><p><code>echo</code>-文字列や変数の値を画面に表示するコマンド<br>
+<br><br>
+例：コンソールにHello Worldと表示される</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token builtin class-name">echo</span> <span class="token string">"Hello World"</span>
+</code></pre><br>
+ブラウザで確認：
+<pre data-role="codeBlock" data-info="" class="language-text"><code>http://[EC2のパブリックIP]/hello.php
+</code></pre><ul>
+<li><code>Hello World</code> と表示されれば成功です．</li>
+</ul>
+<hr>
+<h2 id="2-mariadbのインストール">2. MariaDBのインストール </h2>
+<h3 id="パッケージのインストール">パッケージのインストール </h3>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> mariadb105-server
-</code></pre><h3 id="mariadbの起動自動起動">MariaDBの起動・自動起動 </h3>
+</code></pre><p><code>mariadb105-server</code>-MariaDB10.5系のサーバパッケージ<br>
+<br></p>
+<h3 id="サービスの起動と自動起動設定">サービスの起動と自動起動設定 </h3>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl start mariadb
 <span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> mariadb
-</code></pre><h3 id="セキュリティ設定">セキュリティ設定 </h3>
+</code></pre><br>
+<h3 id="初期設定スクリプトの実行">初期設定スクリプトの実行 </h3>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> mysql_secure_installation
-</code></pre><hr>
-<h2 id="4-phpmyadminのインストールと設定">4. phpMyAdminのインストールと設定 </h2>
-<h3 id="epelの有効化とphpmyadminのインストール">EPELの有効化とphpMyAdminのインストール </h3>
+</code></pre><ul>
+<li>パスワード設定，匿名ユーザー削除，リモートログイン制限，テストDB削除などを設定できます．</li>
+<li>対話形式で安全に初期設定を行えるコマンド</li>
+</ul>
+<hr>
+<h2 id="3-phpmyadminのインストール">3. phpMyAdminのインストール </h2>
+<h3 id="epelリポジトリの有効化とインストール">EPELリポジトリの有効化とインストール </h3>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> epel-release
 <span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> phpMyAdmin
-</code></pre><h3 id="アクセス制限設定の変更">アクセス制限設定の変更 </h3>
+</code></pre><br>
+<h3 id="apache設定ファイルの編集アクセス許可">Apache設定ファイルの編集（アクセス許可） </h3>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">nano</span> /etc/httpd/conf.d/phpMyAdmin.conf
-</code></pre><p>（<code>Require ip 127.0.0.1</code> を <code>Require all granted</code> に変更）</p>
+</code></pre><ul>
+<li><code>Require ip 127.0.0.1</code> や <code>Allow from 127.0.0.1</code> を <code>Require all granted</code> に変更することで外部からのアクセスを許可できる<br>
+<br></li>
+</ul>
 <h3 id="apacheの再起動">Apacheの再起動 </h3>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl restart httpd
 </code></pre><hr>
-<h2 id="5-firewalld-の導入と設定">5. firewalld の導入と設定 </h2>
-<h3 id="firewalldのインストールと起動">firewalldのインストールと起動 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> firewalld
-<span class="token function">sudo</span> systemctl start firewalld
-<span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> firewalld
-</code></pre><h3 id="httphttpsの開放">HTTP/HTTPSの開放 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--permanent</span> --add-service<span class="token operator">=</span>http
-<span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--permanent</span> --add-service<span class="token operator">=</span>https
-<span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--reload</span>
-</code></pre><hr>
-<h2 id="6-icmppingの許可必要に応じて">6. ICMP(ping)の許可（必要に応じて） </h2>
-<h3 id="icmpの有効化設定ping応答">ICMPの有効化設定（ping応答） </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--permanent</span> <span class="token parameter variable">--zone</span><span class="token operator">=</span>public --add-icmp-type<span class="token operator">=</span>echo-request
-<span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--reload</span>
-</code></pre><hr>
-<h2 id="7-トラブル時に確認したコマンド">7. トラブル時に確認したコマンド </h2>
-<h3 id="アクティブなゾーン確認">アクティブなゾーン確認 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> firewall-cmd --get-active-zones
-</code></pre><h3 id="httpd-ドキュメントルートの確認">httpd ドキュメントルートの確認 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">ls</span> <span class="token parameter variable">-l</span> /var/www/
-</code></pre><hr>
-<p>以上がサーバ復旧時に使用した主要なコマンドと対応の記録です。</p>
+<h2 id="4-phpmyadminへログイン">4. phpMyAdminへログイン </h2>
+<ul>
+<li>ブラウザで以下にアクセス：</li>
+</ul>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>http://[EC2のパブリックIP]/phpMyAdmin
+</code></pre><ul>
+<li>
+<p>MariaDBのユーザー名とパスワードを入力してログイン．</p>
+</li>
+<li>
+<p>ログインできれば，Apache・PHP・MariaDB・phpMyAdmin の連携確認は完了．</p>
+</li>
+</ul>
 
       </div>
       

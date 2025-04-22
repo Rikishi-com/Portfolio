@@ -49,6 +49,14 @@
     padding: 15px;
     border-radius: 8px;
   }
+  backbutton{
+    background: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
   footer {
     background: #34495e;
     color: white;

@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head>
-      <title>ssh_summary</title>
+      <title>server_recovery_instance_details</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -19,151 +19,54 @@
   document.addEventListener("DOMContentLoaded", function () {
     // your code here
   });
-</script></head><body for="html-export">
+</script></head><body for="html-export"><?php include "header.html"; ?>
     
     
       <div class="crossnote markdown-preview  ">
       
-<h1 id="ssh通信についての学習まとめ">SSH通信についての学習まとめ </h1>
-<p>前提として，IPアドレスを[57.180.208.0]として，AWSを使用している(ユーザ名が<strong>ec2-user</strong>)<br>
-<br></p>
-<h2 id="ssh通信とは">SSH通信とは </h2>
-<p>SSH（Secure Shell）は，ネットワーク越しに他のコンピュータへ安全に接続するためのプロトコルである．<br>
-主にリモートサーバの操作やファイルの転送に使われ，通信は暗号化されているため安全である．</p>
-<hr>
-<h2 id="ssh接続の基本コマンド">SSH接続の基本コマンド </h2>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">ssh</span> ユーザー名@ホスト名（またはIPアドレス）
-</code></pre><h3 id="例">例 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">ssh</span> ec2-user@57.180.208.0
-</code></pre><h3 id="秘密鍵pemを使って接続する場合">秘密鍵（.pem）を使って接続する場合 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">ssh</span> <span class="token parameter variable">-i</span> <span class="token punctuation">[</span>秘密鍵のパス<span class="token punctuation">]</span> ec2-user@57.180.208.0
-</code></pre><p><code>-i</code>-秘密鍵ファイルを指定するオプション</p>
-<hr>
-<h2 id="ssh接続に必要なもの">SSH接続に必要なもの </h2>
-<table>
-<thead>
-<tr>
-<th>必要なもの</th>
-<th>説明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ユーザー名</td>
-<td>接続先のサーバで使用するアカウント（例：ec2-user）</td>
-</tr>
-<tr>
-<td>IPアドレスまたはホスト名</td>
-<td>接続先サーバのアドレス</td>
-</tr>
-<tr>
-<td>秘密鍵ファイル（.pem）</td>
-<td>AWS EC2などで提供される認証鍵</td>
-</tr>
-<tr>
-<td>SSHクライアント</td>
-<td>ターミナル（Mac・Linux）やPuTTY（Windows）など</td>
-</tr>
-</tbody>
-</table>
-<h3 id="秘密鍵を指定せずにssh通信を開始する方法">秘密鍵を指定せずにSSH通信を開始する方法 </h3>
-<h4 id="sshconfig-に設定を書く">~/.ssh/config に設定を書く </h4>
-<p>以下のように<code>config</code>ファイルに設定を記述する</p>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token comment"># ~/.ssh/config</span>
-Host my-ec2
-  HostName <span class="token number">57.180</span>.208.0
-  User ec2-user
-  IdentityFile <span class="token punctuation">[</span>秘密鍵のパス<span class="token punctuation">]</span>
-</code></pre><hr>
-<h2 id="ファイルのアップロード方法scp">ファイルのアップロード方法（scp） </h2>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">scp</span> <span class="token parameter variable">-i</span> /path/to/key.pem ローカルファイル ec2-user@IP:/アップロード先パス
-</code></pre><p><code>scp</code>-Secure Copy Protocol，リモートサーバとローカル間でファイルを安全にコピーするためのコマンド</p>
-<h3 id="ディレクトリをアップロードする場合">ディレクトリをアップロードする場合 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">scp</span> <span class="token parameter variable">-i</span> <span class="token punctuation">[</span>秘密鍵のパス<span class="token punctuation">]</span> <span class="token parameter variable">-r</span> ローカルディレクトリ ec2-user@IP:/アップロード先パス
-</code></pre><hr>
-<h2 id="ファイルのダウンロード方法">ファイルのダウンロード方法 </h2>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">scp</span> <span class="token parameter variable">-i</span> /path/to/key.pem ec2-user@IP:/サーバ上のファイル ./ローカルパス
-</code></pre><hr>
-<h2 id="差分アップロード上書きアップロードrsync">差分アップロード・上書きアップロード（rsync） </h2>
-<p>より効率的に変更ファイルだけをアップロードするには，<code>rsync</code> を使う．</p>
-<h3 id="rsyncコマンドの例">rsyncコマンドの例 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">rsync</span> <span class="token parameter variable">-avz</span> <span class="token parameter variable">-e</span> <span class="token string">"ssh -i /path/to/key.pem"</span> ./local_dir/ ec2-user@IP:/remote_dir/
-</code></pre><table>
-<thead>
-<tr>
-<th>オプション</th>
-<th>説明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-a</td>
-<td>アーカイブモード（再帰的・権限維持）</td>
-</tr>
-<tr>
-<td>-v</td>
-<td>詳細出力</td>
-</tr>
-<tr>
-<td>-z</td>
-<td>転送時に圧縮</td>
-</tr>
-<tr>
-<td>-e</td>
-<td>SSHオプションを指定</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h2 id="vscodeのremote-sshの使い方">VSCodeのRemote SSHの使い方 </h2>
-<ol>
-<li>拡張機能から「Remote - SSH」をインストールする．</li>
-<li>左下の緑色のアイコンから「Remote-SSH: Connect to Host...」を選ぶ．</li>
-<li><code>~/.ssh/config</code> にホスト情報を追加しておくと便利である．</li>
-</ol>
-<h3 id="ssh設定ファイルの例sshconfig">SSH設定ファイルの例（~/.ssh/config） </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>Host my-ec2
-  HostName <span class="token number">57.180</span>.208.0
-  User ec2-user
-  IdentityFile <span class="token punctuation">[</span>秘密鍵のパス<span class="token punctuation">]</span>
-</code></pre><ol start="4">
-<li>接続後，VSCodeのファイルエクスプローラーからリモートサーバ内のファイルを編集できる．</li>
-<li>編集後に保存すれば，自動でサーバに上書き保存される．</li>
-</ol>
-<hr>
-<h2 id="ssh接続終了方法">SSH接続終了方法 </h2>
-<p>接続中に <code>exit</code> または <code>Ctrl + D</code> で終了できる．</p>
-<hr>
-<h2 id="よくあるエラーと対処法">よくあるエラーと対処法 </h2>
-<table>
-<thead>
-<tr>
-<th>エラー内容</th>
-<th>対処法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Permission denied (publickey)</td>
-<td>鍵ファイルのパーミッションを <code>chmod 400</code> または <code>600</code> に設定する．</td>
-</tr>
-<tr>
-<td>Connection timed out</td>
-<td>サーバのIPアドレス，セキュリティグループの設定を確認する．</td>
-</tr>
-<tr>
-<td>Host key verification failed</td>
-<td><code>~/.ssh/known_hosts</code> の該当エントリを削除して再接続する．</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h2 id="まとめ">まとめ </h2>
+<h3 id="ebsボリュームのアタッチ手順ボリュームが切り離された場合">EBSボリュームのアタッチ手順（ボリュームが切り離された場合） </h3>
+<h4 id="1-新しい一時ec2インスタンスを作成必要な場合">1. 新しい一時EC2インスタンスを作成（必要な場合） </h4>
+<h4 id="2-既存のルートボリュームをアタッチ">2. 既存のルートボリュームをアタッチ </h4>
 <ul>
-<li>SSHは安全なリモート接続のためのプロトコルである．</li>
-<li><code>scp</code>でファイル転送が可能だが，差分のみ転送したい場合は<code>rsync</code>を使う．</li>
-<li>VSCodeのRemote SSH機能を使えばGUIで直感的にサーバ操作ができる．</li>
+<li>EC2 → EBS → 対象ボリューム → 「アクション」→「ボリュームのアタッチ」</li>
+<li>インスタンスIDを指定し、デバイス名を例：<code>/dev/xvdf</code> と設定</li>
 </ul>
+<h4 id="3-アタッチされたボリュームのマウント">3. アタッチされたボリュームのマウント </h4>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">mkdir</span> /mnt/recovery
+<span class="token function">sudo</span> <span class="token function">mount</span> /dev/xvdf1 /mnt/recovery
+</code></pre><p>※<code>xvdf1</code> のようにパーティション番号がつくことがあるため、<code>lsblk</code> で確認する</p>
+<h4 id="4-必要なデータの確認修復コピー">4. 必要なデータの確認・修復・コピー </h4>
+<h4 id="5-アンマウントとデタッチ">5. アンマウントとデタッチ </h4>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">umount</span> /mnt/recovery
+</code></pre><ul>
+<li>コンソールからボリュームの「デタッチ」</li>
+</ul>
+<hr>
+<h3 id="その他のインスタンス操作参考">その他のインスタンス操作（参考） </h3>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>方法・備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>シャットダウン</td>
+<td><code>sudo shutdown -h now</code> または AWSコンソールで「停止」</td>
+</tr>
+<tr>
+<td>再起動</td>
+<td><code>sudo reboot</code> または コンソールから「再起動」</td>
+</tr>
+<tr>
+<td>Elastic IP再関連付け</td>
+<td>停止後にIPアドレスが変わる構成の場合、再付与が必要</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>これらの操作により、OS起動不可・Webアクセス不能・ファイル損失といった障害に対応しました。</p>
 
       </div>
       

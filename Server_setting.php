@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head>
-      <title>linux_web_server_setup</title>
+      <title>Sarver_setting</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -19,7 +19,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     // your code here
   });
-</script></head><body for="html-export">
+</script></head><body for="html-export"><?php include "header.html"; ?>
     
     
       <div class="crossnote markdown-preview  ">

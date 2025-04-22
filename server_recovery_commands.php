@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head>
-      <title>Linux_command</title>
+      <title>server_recovery_commands</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -19,127 +19,78 @@
   document.addEventListener("DOMContentLoaded", function () {
     // your code here
   });
-</script></head><body for="html-export">
+</script></head><body for="html-export"><?php include "header.html"; ?>
     
     
       <div class="crossnote markdown-preview  ">
       
-<h1 id="初心者向けlinuxコマンドまとめ">初心者向けLinuxコマンドまとめ </h1>
-<p>Linux初心者の方に向けて、よく使う基本的なコマンドをまとめました。各コマンドの使い方や例を簡潔に説明します。</p>
+<h1 id="linuxサーバ復旧時の対応と使用コマンドまとめ">Linuxサーバ復旧時の対応と使用コマンドまとめ </h1>
+<p>このページでは，Amazon Linux 2023上でWebサーバ（Apache + PHP + MariaDB）を構築・復旧する際に使用した手順とコマンドをまとめます．<br><br>
+インスタンスはEC2で稼働しており，firewalldやphpMyAdminなどを追加設定した内容も含まれます．</p>
 <hr>
-<h2 id="1-基本コマンド">1. 基本コマンド </h2>
-<h3 id="ls---ディレクトリの内容を表示"><code>ls</code> - ディレクトリの内容を表示 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">ls</span>
-</code></pre><ul>
-<li><strong>説明</strong>: 現在のディレクトリ内のファイルやフォルダを一覧表示します。</li>
-<li><strong>オプション</strong>:
-<ul>
-<li><code>-l</code>: 詳細情報を表示</li>
-<li><code>-a</code>: 隠しファイルも表示</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="cd---ディレクトリを移動"><code>cd</code> - ディレクトリを移動 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token builtin class-name">cd</span> <span class="token punctuation">[</span>ディレクトリ名<span class="token punctuation">]</span>
-</code></pre><ul>
-<li><strong>説明</strong>: 指定したディレクトリに移動します。</li>
-<li><strong>例</strong>:
-<ul>
-<li><code>cd /home/user</code>: <code>/home/user</code>ディレクトリに移動</li>
-<li><code>cd ..</code>: 一つ上のディレクトリに移動</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="pwd---現在のディレクトリを表示"><code>pwd</code> - 現在のディレクトリを表示 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token builtin class-name">pwd</span>
-</code></pre><ul>
-<li><strong>説明</strong>: 現在作業中のディレクトリのパスを表示します。</li>
-</ul>
-<hr>
-<h2 id="2-ファイル操作コマンド">2. ファイル操作コマンド </h2>
-<h3 id="touch---空のファイルを作成"><code>touch</code> - 空のファイルを作成 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">touch</span> <span class="token punctuation">[</span>ファイル名<span class="token punctuation">]</span>
-</code></pre><ul>
-<li><strong>説明</strong>: 新しい空のファイルを作成します。</li>
-</ul>
-<hr>
-<h3 id="cp---ファイルやディレクトリをコピー"><code>cp</code> - ファイルやディレクトリをコピー </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">cp</span> <span class="token punctuation">[</span>コピー元<span class="token punctuation">]</span> <span class="token punctuation">[</span>コピー先<span class="token punctuation">]</span>
-</code></pre><ul>
-<li><strong>説明</strong>: ファイルやディレクトリをコピーします。</li>
-<li><strong>オプション</strong>:
-<ul>
-<li><code>-r</code>: ディレクトリを再帰的にコピー</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="mv---ファイルやディレクトリを移動または名前変更"><code>mv</code> - ファイルやディレクトリを移動または名前変更 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">mv</span> <span class="token punctuation">[</span>移動元<span class="token punctuation">]</span> <span class="token punctuation">[</span>移動先<span class="token punctuation">]</span>
-</code></pre><ul>
-<li><strong>説明</strong>: ファイルやディレクトリを移動したり、名前を変更したりします。</li>
-</ul>
-<hr>
-<h3 id="rm---ファイルやディレクトリを削除"><code>rm</code> - ファイルやディレクトリを削除 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">rm</span> <span class="token punctuation">[</span>ファイル名<span class="token punctuation">]</span>
-</code></pre><ul>
-<li><strong>説明</strong>: ファイルを削除します。</li>
-<li><strong>オプション</strong>:
-<ul>
-<li><code>-r</code>: ディレクトリを再帰的に削除</li>
-<li><code>-f</code>: 確認なしで強制削除</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="3-システム情報コマンド">3. システム情報コマンド </h2>
-<h3 id="uname---システム情報を表示"><code>uname</code> - システム情報を表示 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">uname</span> <span class="token parameter variable">-a</span>
-</code></pre><ul>
-<li><strong>説明</strong>: システムの詳細情報を表示します。</li>
-</ul>
-<hr>
-<h3 id="df---ディスク使用量を表示"><code>df</code> - ディスク使用量を表示 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">df</span> <span class="token parameter variable">-h</span>
-</code></pre><ul>
-<li><strong>説明</strong>: ディスクの使用状況を表示します。</li>
-</ul>
-<hr>
-<h3 id="top---プロセスのリアルタイム情報を表示"><code>top</code> - プロセスのリアルタイム情報を表示 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">top</span>
-</code></pre><ul>
-<li><strong>説明</strong>: 現在動作中のプロセスをリアルタイムで監視します。</li>
-</ul>
-<hr>
-<h2 id="4-ネットワーク関連コマンド">4. ネットワーク関連コマンド </h2>
-<h3 id="ping---接続確認"><code>ping</code> - 接続確認 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">ping</span> <span class="token punctuation">[</span>ホスト名またはIPアドレス<span class="token punctuation">]</span>
-</code></pre><ul>
-<li><strong>説明</strong>: 指定したホストへの接続を確認します。</li>
-</ul>
-<hr>
-<h3 id="curl---データを取得"><code>curl</code> - データを取得 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">curl</span> <span class="token punctuation">[</span>URL<span class="token punctuation">]</span>
-</code></pre><ul>
-<li><strong>説明</strong>: 指定したURLからデータを取得します。</li>
-</ul>
-<hr>
-<h2 id="5-ヘルプとマニュアル">5. ヘルプとマニュアル </h2>
-<h3 id="man---コマンドのマニュアルを表示"><code>man</code> - コマンドのマニュアルを表示 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">man</span> <span class="token punctuation">[</span>コマンド名<span class="token punctuation">]</span>
-</code></pre><ul>
-<li><strong>説明</strong>: 指定したコマンドの詳細なマニュアルを表示します。</li>
-</ul>
-<hr>
-<h3 id="-help---コマンドの簡易ヘルプを表示"><code>--help</code> - コマンドの簡易ヘルプを表示 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token punctuation">[</span>コマンド名<span class="token punctuation">]</span> <span class="token parameter variable">--help</span>
-</code></pre><ul>
-<li><strong>説明</strong>: コマンドの簡単な使い方を表示します。</li>
-</ul>
-<hr>
-<p>以上が初心者向けのLinuxコマンドの基本的なまとめです。ぜひ参考にしてください！</p>
+<h2 id="1-apacheの復旧と起動">1. Apacheの復旧と起動 </h2>
+<h3 id="apacheのインストール">Apacheのインストール </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> httpd
+</code></pre><h3 id="apacheの起動自動起動設定">Apacheの起動・自動起動設定 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl start httpd
+<span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> httpd
+</code></pre><h3 id="apacheの状態確認">Apacheの状態確認 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl status httpd
+<span class="token function">sudo</span> systemctl is-enabled httpd
+</code></pre><hr>
+<h2 id="2-phpの復旧と動作確認">2. PHPの復旧と動作確認 </h2>
+<h3 id="phpinfoファイルの作成">phpinfoファイルの作成 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">nano</span> /var/www/html/phpinfo.php
+</code></pre><pre data-role="codeBlock" data-info="php" class="language-php php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token function">phpinfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?&gt;</span></span>
+</code></pre><h3 id="hello-worldテスト">Hello Worldテスト </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">nano</span> /var/www/html/hello.php
+</code></pre><pre data-role="codeBlock" data-info="php" class="language-php php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword keyword-echo">echo</span> <span class="token string double-quoted-string">"Hello World"</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?&gt;</span></span>
+</code></pre><hr>
+<h2 id="3-mariadbの再インストールと初期設定">3. MariaDBの再インストールと初期設定 </h2>
+<h3 id="mariadbのインストール">MariaDBのインストール </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> mariadb105-server
+</code></pre><h3 id="mariadbの起動自動起動">MariaDBの起動・自動起動 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl start mariadb
+<span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> mariadb
+</code></pre><h3 id="セキュリティ設定">セキュリティ設定 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> mysql_secure_installation
+</code></pre><hr>
+<h2 id="4-phpmyadminのインストールと設定">4. phpMyAdminのインストールと設定 </h2>
+<h3 id="epelの有効化とphpmyadminのインストール">EPELの有効化とphpMyAdminのインストール </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> epel-release
+<span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> phpMyAdmin
+</code></pre><h3 id="アクセス制限設定の変更">アクセス制限設定の変更 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">nano</span> /etc/httpd/conf.d/phpMyAdmin.conf
+</code></pre><p>（<code>Require ip 127.0.0.1</code> を <code>Require all granted</code> に変更）</p>
+<h3 id="apacheの再起動">Apacheの再起動 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl restart httpd
+</code></pre><hr>
+<h2 id="5-firewalld-の導入と設定">5. firewalld の導入と設定 </h2>
+<h3 id="firewalldのインストールと起動">firewalldのインストールと起動 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> firewalld
+<span class="token function">sudo</span> systemctl start firewalld
+<span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> firewalld
+</code></pre><h3 id="httphttpsの開放">HTTP/HTTPSの開放 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--permanent</span> --add-service<span class="token operator">=</span>http
+<span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--permanent</span> --add-service<span class="token operator">=</span>https
+<span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--reload</span>
+</code></pre><hr>
+<h2 id="6-icmppingの許可必要に応じて">6. ICMP(ping)の許可（必要に応じて） </h2>
+<h3 id="icmpの有効化設定ping応答">ICMPの有効化設定（ping応答） </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--permanent</span> <span class="token parameter variable">--zone</span><span class="token operator">=</span>public --add-icmp-type<span class="token operator">=</span>echo-request
+<span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--reload</span>
+</code></pre><hr>
+<h2 id="7-トラブル時に確認したコマンド">7. トラブル時に確認したコマンド </h2>
+<h3 id="アクティブなゾーン確認">アクティブなゾーン確認 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> firewall-cmd --get-active-zones
+</code></pre><h3 id="httpd-ドキュメントルートの確認">httpd ドキュメントルートの確認 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">ls</span> <span class="token parameter variable">-l</span> /var/www/
+</code></pre><hr>
+<p>以上がサーバ復旧時に使用した主要なコマンドと対応の記録です。</p>
 
       </div>
       

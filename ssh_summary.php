@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head>
-      <title>Sarver_setting</title>
+      <title>ssh_summary</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -19,268 +19,151 @@
   document.addEventListener("DOMContentLoaded", function () {
     // your code here
   });
-</script></head><body for="html-export">
+</script></head><body for="html-export"><?php include "header.html"; ?>
     
     
       <div class="crossnote markdown-preview  ">
       
-<h1 id="初心者向けlinuxサーバ立ち上げ時のコマンドまとめ">初心者向けLinuxサーバ立ち上げ時のコマンドまとめ </h1>
-<p>このページでは，初心者向けにLinuxサーバを作成する際に使用するコマンドをまとめました．<br> このページではAmazon Linuxサーバ　2023を使用しており，EC2サーバの立ち上げが完了している，もしくはそれに準ずる段階まで進んでいることを前提としています．</p>
+<h1 id="ssh通信についての学習まとめ">SSH通信についての学習まとめ </h1>
+<p>前提として，IPアドレスを[57.180.208.0]として，AWSを使用している(ユーザ名が<strong>ec2-user</strong>)<br>
+<br></p>
+<h2 id="ssh通信とは">SSH通信とは </h2>
+<p>SSH（Secure Shell）は，ネットワーク越しに他のコンピュータへ安全に接続するためのプロトコルである．<br>
+主にリモートサーバの操作やファイルの転送に使われ，通信は暗号化されているため安全である．</p>
 <hr>
-<h2 id="1-インストール関連">1. インストール関連 </h2>
-<h3 id="dnf--パッケージマネージャー"><code>dnf</code> -パッケージマネージャー </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>dnf
-</code></pre><ul>
-<li><strong>説明</strong>：dnfはAmazon LinuxなどのFedora，RedHat系で使われるパッケージマネージャーのこと</li>
-<li><strong>注意</strong>；sudoを付けないと権限不足で失敗する<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf
-</code></pre></li>
-</ul>
-<h3 id="実際の手順">実際の手順 </h3>
-<h4 id="最新の状態にアップデートする">最新の状態にアップデートする </h4>
-<ul>
-<li>管理者権限<code>sudo</code>を用いて，パッケージを最新にアップデートする<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf update <span class="token parameter variable">-y</span>
-</code></pre><ul>
-<li><code>-y</code>はすべての確認メッセージに対して<strong>Yes</strong>を選択するということ</li>
-<li><code>ーy</code>なしの場合は，アップデートされる事柄一つ一つに対して確認メッセージが出てくるので，自身で確認する</li>
-</ul>
-</li>
-<li><strong>Complete!</strong> というメッセージが出てきたら成功です．</li>
-</ul>
+<h2 id="ssh接続の基本コマンド">SSH接続の基本コマンド </h2>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">ssh</span> ユーザー名@ホスト名（またはIPアドレス）
+</code></pre><h3 id="例">例 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">ssh</span> ec2-user@57.180.208.0
+</code></pre><h3 id="秘密鍵pemを使って接続する場合">秘密鍵（.pem）を使って接続する場合 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">ssh</span> <span class="token parameter variable">-i</span> <span class="token punctuation">[</span>秘密鍵のパス<span class="token punctuation">]</span> ec2-user@57.180.208.0
+</code></pre><p><code>-i</code>-秘密鍵ファイルを指定するオプション</p>
 <hr>
-<h4 id="必要なパッケージをダウンロードする">必要なパッケージをダウンロードする </h4>
-<ul>
-<li>以下のコマンドを入力する<br>
-<strong>※暗記不要</strong><pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> httpd <span class="token function">wget</span> php-fpm php-mysqli php-json php php-devel
-</code></pre><ul>
-<li><code>httpd</code>：Apacheと呼ばれるWebサーバのこと．</li>
-<li><code>wget</code>：http/https経由でサーバからファイルを取得することが可能になるコマンドライン</li>
-<li><code>php-fpm</code>：<strong>PHP FastCGI Process Manager</strong> <br> ApacheとPHPを連携させるための仕組み</li>
-<li><code>php-mysqli</code>：<strong>MySQL Improved</strong> <br> PHPからMySQLを操作するための拡張機能</li>
-<li><code>php</code>：PHP本体</li>
-<li><code>php-devel</code>；PHPの開発ヘッダやビルドに必要なライブラリ</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="-v-バージョン確認方法"><code>-v</code>-バージョン確認方法 </h3>
-<ul>
-<li>上で説明したパッケージ名の後ろにつける<br></li>
-</ul>
-<p><strong>例</strong></p>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>httpd <span class="token parameter variable">-v</span>
-</code></pre><hr>
-<h3 id="webサーバ起動">Webサーバ起動 </h3>
-<ul>
-<li>
-<p>以下のコマンドでWebサーバ(今回はApache)を起動する</p>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl start httpd
-</code></pre><p><code>systemctl</code>：システム管理ツール．以下にこのコマンドの重要な使い方をまとめる．<br><br>
-<strong><code>systemctl</code>の使い方</strong></p>
-<h4>基本記法</h4>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl <span class="token punctuation">[</span>コマンド名<span class="token punctuation">]</span> <span class="token punctuation">[</span>サービス名<span class="token punctuation">]</span>
-</code></pre><table>
+<h2 id="ssh接続に必要なもの">SSH接続に必要なもの </h2>
+<table>
 <thead>
 <tr>
-<th>コマンド</th>
+<th>必要なもの</th>
 <th>説明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>start</td>
-<td>サービス即時起動</td>
+<td>ユーザー名</td>
+<td>接続先のサーバで使用するアカウント（例：ec2-user）</td>
 </tr>
 <tr>
-<td>stop</td>
-<td>サービス停止</td>
+<td>IPアドレスまたはホスト名</td>
+<td>接続先サーバのアドレス</td>
 </tr>
 <tr>
-<td>restart</td>
-<td>サービス再起動</td>
+<td>秘密鍵ファイル（.pem）</td>
+<td>AWS EC2などで提供される認証鍵</td>
 </tr>
 <tr>
-<td>status</td>
-<td>サービス状態確認</td>
-</tr>
-<tr>
-<td>enable</td>
-<td>サービス自動起動</td>
-</tr>
-<tr>
-<td>disable</td>
-<td>サービス自動起動無効</td>
-</tr>
-<tr>
-<td>is-active</td>
-<td>サービス起動中か確認</td>
-</tr>
-<tr>
-<td>is-enable</td>
-<td>サービス自動起動設定か確認</td>
+<td>SSHクライアント</td>
+<td>ターミナル（Mac・Linux）やPuTTY（Windows）など</td>
 </tr>
 </tbody>
 </table>
-</li>
-</ul>
-<h2 id="2apacheの設定">2．Apacheの設定 </h2>
-<h3 id="情報確認">情報確認 </h3>
-<p>次のコマンドを入力し，必要な情報を確認する</p>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">ls</span> <span class="token parameter variable">-l</span> /var/www/
-</code></pre><ul>
-<li><code>ls</code>：ファイルやディレクトリを一覧表示する</li>
-<li><code>-l</code>：ロング形式のこと．詳細情報を表示する</li>
-<li><code>/var/www/</code>：対象ディレクトリ．多くのLinux環境ではWebサーバのドキュメントルートがここに存在する</li>
-<li><strong>※ドキュメントルート</strong> ：WebページのHTML,CSS，画像などを配置する場所．ドキュメントルート以下のファイルだけが外部に公開される</li>
-</ul>
-<h3 id="アクセス制御パーミッション">アクセス制御（パーミッション） </h3>
-<p>上のコマンドを入力すると，メッセージが返ってくる．その際にそのフォルダのアクセス権限が確認できる．</p>
-<h3 id="表示されるアクセス権限の読み方">表示されるアクセス権限の読み方 </h3>
-<p>例えば以下のような表示があったとします：</p>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>drwxr-xr-x  <span class="token number">2</span> root root <span class="token number">4096</span> Apr <span class="token number">10</span> <span class="token number">12</span>:00 html
+<h3 id="秘密鍵を指定せずにssh通信を開始する方法">秘密鍵を指定せずにSSH通信を開始する方法 </h3>
+<h4 id="sshconfig-に設定を書く">~/.ssh/config に設定を書く </h4>
+<p>以下のように<code>config</code>ファイルに設定を記述する</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token comment"># ~/.ssh/config</span>
+Host my-ec2
+  HostName <span class="token number">57.180</span>.208.0
+  User ec2-user
+  IdentityFile <span class="token punctuation">[</span>秘密鍵のパス<span class="token punctuation">]</span>
+</code></pre><hr>
+<h2 id="ファイルのアップロード方法scp">ファイルのアップロード方法（scp） </h2>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">scp</span> <span class="token parameter variable">-i</span> /path/to/key.pem ローカルファイル ec2-user@IP:/アップロード先パス
+</code></pre><p><code>scp</code>-Secure Copy Protocol，リモートサーバとローカル間でファイルを安全にコピーするためのコマンド</p>
+<h3 id="ディレクトリをアップロードする場合">ディレクトリをアップロードする場合 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">scp</span> <span class="token parameter variable">-i</span> <span class="token punctuation">[</span>秘密鍵のパス<span class="token punctuation">]</span> <span class="token parameter variable">-r</span> ローカルディレクトリ ec2-user@IP:/アップロード先パス
+</code></pre><hr>
+<h2 id="ファイルのダウンロード方法">ファイルのダウンロード方法 </h2>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">scp</span> <span class="token parameter variable">-i</span> /path/to/key.pem ec2-user@IP:/サーバ上のファイル ./ローカルパス
+</code></pre><hr>
+<h2 id="差分アップロード上書きアップロードrsync">差分アップロード・上書きアップロード（rsync） </h2>
+<p>より効率的に変更ファイルだけをアップロードするには，<code>rsync</code> を使う．</p>
+<h3 id="rsyncコマンドの例">rsyncコマンドの例 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">rsync</span> <span class="token parameter variable">-avz</span> <span class="token parameter variable">-e</span> <span class="token string">"ssh -i /path/to/key.pem"</span> ./local_dir/ ec2-user@IP:/remote_dir/
 </code></pre><table>
 <thead>
 <tr>
-<th>部分</th>
-<th>意味</th>
+<th>オプション</th>
+<th>説明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>d</td>
-<td>ディレクトリ</td>
+<td>-a</td>
+<td>アーカイブモード（再帰的・権限維持）</td>
 </tr>
 <tr>
-<td>rwx</td>
-<td>所有者（この場合root）の権限．read,write,x（実行）のこと</td>
+<td>-v</td>
+<td>詳細出力</td>
 </tr>
 <tr>
-<td>r-x</td>
-<td>グループ（この場合root）の権限，read,xのみ</td>
+<td>-z</td>
+<td>転送時に圧縮</td>
 </tr>
 <tr>
-<td>2</td>
-<td>リンク数（このディレクトリに何個のリンクがあるか）</td>
-</tr>
-<tr>
-<td>root</td>
-<td>所有者</td>
-</tr>
-<tr>
-<td>root</td>
-<td>グループ</td>
-</tr>
-<tr>
-<td>4096</td>
-<td>ファイルサイズ</td>
-</tr>
-<tr>
-<td>Apr 10 12:00</td>
-<td>最終更新日時</td>
-</tr>
-<tr>
-<td>html</td>
-<td>ディレクトリ名</td>
+<td>-e</td>
+<td>SSHオプションを指定</td>
 </tr>
 </tbody>
 </table>
 <hr>
-<h2 id="3-apacheの自動起動設定">3. Apacheの自動起動設定 </h2>
-<h3 id="起動時に自動的にapacheが立ち上がるようにする">起動時に自動的にApacheが立ち上がるようにする </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> httpd
-</code></pre><h3 id="自動起動設定の確認">自動起動設定の確認 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl is-enabled httpd
-</code></pre><ul>
-<li><code>enabled</code> と表示されればOK</li>
-</ul>
+<h2 id="vscodeのremote-sshの使い方">VSCodeのRemote SSHの使い方 </h2>
+<ol>
+<li>拡張機能から「Remote - SSH」をインストールする．</li>
+<li>左下の緑色のアイコンから「Remote-SSH: Connect to Host...」を選ぶ．</li>
+<li><code>~/.ssh/config</code> にホスト情報を追加しておくと便利である．</li>
+</ol>
+<h3 id="ssh設定ファイルの例sshconfig">SSH設定ファイルの例（~/.ssh/config） </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>Host my-ec2
+  HostName <span class="token number">57.180</span>.208.0
+  User ec2-user
+  IdentityFile <span class="token punctuation">[</span>秘密鍵のパス<span class="token punctuation">]</span>
+</code></pre><ol start="4">
+<li>接続後，VSCodeのファイルエクスプローラーからリモートサーバ内のファイルを編集できる．</li>
+<li>編集後に保存すれば，自動でサーバに上書き保存される．</li>
+</ol>
 <hr>
-<h2 id="4-ファイアウォールの設定必要な場合">4. ファイアウォールの設定（必要な場合） </h2>
-<p>Amazon Linux 2023では、<code>firewalld</code> はデフォルトで無効になっている場合もありますが、もし有効な場合はポートの開放が必要です。</p>
-<h3 id="httpポート80の開放">HTTP（ポート80）の開放 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--permanent</span> --add-service<span class="token operator">=</span>http
-<span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--reload</span>
-</code></pre><h3 id="httpsポート443の開放sslを使用する場合">HTTPS（ポート443）の開放（SSLを使用する場合） </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--permanent</span> --add-service<span class="token operator">=</span>https
-<span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--reload</span>
-</code></pre><hr>
-<h2 id="5-webサーバの動作確認">5. Webサーバの動作確認 </h2>
-<p>ブラウザを開いて以下のようにアクセスします：</p>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>http://[自分のEC2インスタンスのパブリックIPアドレス]/
-</code></pre><p>Apacheの初期ページ（例："Amazon Linux Apache test page"）が表示されれば成功です。</p>
+<h2 id="ssh接続終了方法">SSH接続終了方法 </h2>
+<p>接続中に <code>exit</code> または <code>Ctrl + D</code> で終了できる．</p>
 <hr>
-<h2 id="6-トラブルシューティング基本">6. トラブルシューティング（基本） </h2>
-<h3 id="apacheが起動しない動作しないとき">Apacheが起動しない・動作しないとき </h3>
-<p>以下のコマンドでログを確認：</p>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> journalctl <span class="token parameter variable">-u</span> httpd
-</code></pre><h3 id="状態を確認">状態を確認 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl status httpd
-</code></pre><p>エラーが表示されている場合は、その内容をもとに対応する必要があります。</p>
-<hr>
-<h2 id="7-よく使う便利コマンド">7. よく使う便利コマンド </h2>
+<h2 id="よくあるエラーと対処法">よくあるエラーと対処法 </h2>
 <table>
 <thead>
 <tr>
-<th>コマンド</th>
-<th>意味</th>
+<th>エラー内容</th>
+<th>対処法</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>cd</code></td>
-<td>ディレクトリ移動</td>
+<td>Permission denied (publickey)</td>
+<td>鍵ファイルのパーミッションを <code>chmod 400</code> または <code>600</code> に設定する．</td>
 </tr>
 <tr>
-<td><code>ls -l</code></td>
-<td>ファイル・ディレクトリの詳細表示</td>
+<td>Connection timed out</td>
+<td>サーバのIPアドレス，セキュリティグループの設定を確認する．</td>
 </tr>
 <tr>
-<td><code>pwd</code></td>
-<td>現在のディレクトリを表示</td>
-</tr>
-<tr>
-<td><code>mkdir</code></td>
-<td>ディレクトリ作成</td>
-</tr>
-<tr>
-<td><code>rm</code></td>
-<td>ファイル削除</td>
-</tr>
-<tr>
-<td><code>rm -r</code></td>
-<td>ディレクトリを中身ごと削除</td>
-</tr>
-<tr>
-<td><code>cp</code></td>
-<td>ファイル・ディレクトリをコピー</td>
-</tr>
-<tr>
-<td><code>mv</code></td>
-<td>ファイル・ディレクトリを移動または名前変更</td>
-</tr>
-<tr>
-<td><code>cat</code></td>
-<td>ファイルの中身を表示</td>
-</tr>
-<tr>
-<td><code>nano</code></td>
-<td>簡易テキストエディタ（初心者向け）</td>
-</tr>
-<tr>
-<td><code>vim</code></td>
-<td>高機能なテキストエディタ（中級者以上向け）</td>
+<td>Host key verification failed</td>
+<td><code>~/.ssh/known_hosts</code> の該当エントリを削除して再接続する．</td>
 </tr>
 </tbody>
 </table>
 <hr>
-<h2 id="補足ドキュメントルートを変更したい場合">補足：ドキュメントルートを変更したい場合 </h2>
-<p>設定ファイル <code>/etc/httpd/conf/httpd.conf</code> を編集することでドキュメントルートの変更が可能です。</p>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">nano</span> /etc/httpd/conf/httpd.conf
-</code></pre><ul>
-<li><code>DocumentRoot "/var/www/html"</code> の箇所を変更し、同様に <code>&lt;Directory "/var/www/html"&gt;</code> も一致させて変更します。</li>
-<li>編集後はApacheを再起動：</li>
+<h2 id="まとめ">まとめ </h2>
+<ul>
+<li>SSHは安全なリモート接続のためのプロトコルである．</li>
+<li><code>scp</code>でファイル転送が可能だが，差分のみ転送したい場合は<code>rsync</code>を使う．</li>
+<li>VSCodeのRemote SSH機能を使えばGUIで直感的にサーバ操作ができる．</li>
 </ul>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl restart httpd
-</code></pre><hr>
-<p>以上が基本的なLinux上でのApache Webサーバ構築手順です。</p>
 
       </div>
       

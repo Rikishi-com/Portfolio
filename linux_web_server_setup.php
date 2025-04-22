@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head>
-      <title>php_setup_and_verification</title>
+      <title>linux_web_server_setup</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -19,101 +19,268 @@
   document.addEventListener("DOMContentLoaded", function () {
     // your code here
   });
-</script></head><body for="html-export">
+</script></head><body for="html-export"><?php include 'header.html'; ?>
     
     
       <div class="crossnote markdown-preview  ">
       
-<h1 id="phpの動作確認と基本的な設定">PHPの動作確認と基本的な設定 </h1>
-<p>このページでは，Apacheサーバ上でPHPを動作させるための確認手順と，MariaDB，phpMyAdminの設定をまとめます．<br><br>
-この手順は <code>/var/www/html</code> をドキュメントルートとし，ApacheとPHPが正常にインストール・起動されていることを前提とします．</p>
+<h1 id="初心者向けlinuxサーバ立ち上げ時のコマンドまとめ">初心者向けLinuxサーバ立ち上げ時のコマンドまとめ </h1>
+<p>このページでは，初心者向けにLinuxサーバを作成する際に使用するコマンドをまとめました．<br> このページではAmazon Linuxサーバ　2023を使用しており，EC2サーバの立ち上げが完了している，もしくはそれに準ずる段階まで進んでいることを前提としています．</p>
 <hr>
-<h2 id="1-phpの動作確認">1. PHPの動作確認 </h2>
-<h3 id="phpinfoで環境確認"><code>phpinfo()</code>で環境確認 </h3>
+<h2 id="1-インストール関連">1. インストール関連 </h2>
+<h3 id="dnf--パッケージマネージャー"><code>dnf</code> -パッケージマネージャー </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>dnf
+</code></pre><ul>
+<li><strong>説明</strong>：dnfはAmazon LinuxなどのFedora，RedHat系で使われるパッケージマネージャーのこと</li>
+<li><strong>注意</strong>；sudoを付けないと権限不足で失敗する<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf
+</code></pre></li>
+</ul>
+<h3 id="実際の手順">実際の手順 </h3>
+<h4 id="最新の状態にアップデートする">最新の状態にアップデートする </h4>
 <ul>
-<li><code>/var/www/html</code> 配下に <code>phpinfo.php</code> というファイルを作成する．</li>
-</ul>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">nano</span> /var/www/html/phpinfo.php
-</code></pre><p><code>nano</code>-テキストエディタ．<code>vim</code>,<code>emacs</code>より操作が直感的<br>
-<br><br>
-例：ファイルを開く（なければ作成）</p>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">nano</span> filename.txt
-</code></pre><br>
-以下の内容を記述して保存する．
-<pre data-role="codeBlock" data-info="php" class="language-php php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
-<span class="token function">phpinfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token delimiter important">?&gt;</span></span>
-</code></pre><br>
-ブラウザで以下にアクセスする：
-<pre data-role="codeBlock" data-info="" class="language-text"><code>http://[EC2のパブリックIP]/phpinfo.php
+<li>管理者権限<code>sudo</code>を用いて，パッケージを最新にアップデートする<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf update <span class="token parameter variable">-y</span>
 </code></pre><ul>
-<li>PHPの詳細情報ページが表示されれば，PHPは正しくインストールされている．</li>
+<li><code>-y</code>はすべての確認メッセージに対して<strong>Yes</strong>を選択するということ</li>
+<li><code>ーy</code>なしの場合は，アップデートされる事柄一つ一つに対して確認メッセージが出てくるので，自身で確認する</li>
+</ul>
+</li>
+<li><strong>Complete!</strong> というメッセージが出てきたら成功です．</li>
 </ul>
 <hr>
-<h3 id="hello-world-をphpで表示"><code>Hello World</code> をPHPで表示 </h3>
+<h4 id="必要なパッケージをダウンロードする">必要なパッケージをダウンロードする </h4>
 <ul>
-<li><code>/var/www/html/hello.php</code> というファイルを作成する：</li>
-</ul>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">nano</span> /var/www/html/hello.php
-</code></pre><br>
-以下のコードを記述：
-<pre data-role="codeBlock" data-info="php" class="language-php php"><code><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
-<span class="token keyword keyword-echo">echo</span> <span class="token string double-quoted-string">"Hello World"</span><span class="token punctuation">;</span>
-<span class="token delimiter important">?&gt;</span></span>
-</code></pre><p><code>echo</code>-文字列や変数の値を画面に表示するコマンド<br>
-<br><br>
-例：コンソールにHello Worldと表示される</p>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token builtin class-name">echo</span> <span class="token string">"Hello World"</span>
-</code></pre><br>
-ブラウザで確認：
-<pre data-role="codeBlock" data-info="" class="language-text"><code>http://[EC2のパブリックIP]/hello.php
+<li>以下のコマンドを入力する<br>
+<strong>※暗記不要</strong><pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> httpd <span class="token function">wget</span> php-fpm php-mysqli php-json php php-devel
 </code></pre><ul>
-<li><code>Hello World</code> と表示されれば成功です．</li>
+<li><code>httpd</code>：Apacheと呼ばれるWebサーバのこと．</li>
+<li><code>wget</code>：http/https経由でサーバからファイルを取得することが可能になるコマンドライン</li>
+<li><code>php-fpm</code>：<strong>PHP FastCGI Process Manager</strong> <br> ApacheとPHPを連携させるための仕組み</li>
+<li><code>php-mysqli</code>：<strong>MySQL Improved</strong> <br> PHPからMySQLを操作するための拡張機能</li>
+<li><code>php</code>：PHP本体</li>
+<li><code>php-devel</code>；PHPの開発ヘッダやビルドに必要なライブラリ</li>
+</ul>
+</li>
 </ul>
 <hr>
-<h2 id="2-mariadbのインストール">2. MariaDBのインストール </h2>
-<h3 id="パッケージのインストール">パッケージのインストール </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> mariadb105-server
-</code></pre><p><code>mariadb105-server</code>-MariaDB10.5系のサーバパッケージ<br>
-<br></p>
-<h3 id="サービスの起動と自動起動設定">サービスの起動と自動起動設定 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl start mariadb
-<span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> mariadb
-</code></pre><br>
-<h3 id="初期設定スクリプトの実行">初期設定スクリプトの実行 </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> mysql_secure_installation
+<h3 id="-v-バージョン確認方法"><code>-v</code>-バージョン確認方法 </h3>
+<ul>
+<li>上で説明したパッケージ名の後ろにつける<br></li>
+</ul>
+<p><strong>例</strong></p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>httpd <span class="token parameter variable">-v</span>
+</code></pre><hr>
+<h3 id="webサーバ起動">Webサーバ起動 </h3>
+<ul>
+<li>
+<p>以下のコマンドでWebサーバ(今回はApache)を起動する</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl start httpd
+</code></pre><p><code>systemctl</code>：システム管理ツール．以下にこのコマンドの重要な使い方をまとめる．<br><br>
+<strong><code>systemctl</code>の使い方</strong></p>
+<h4>基本記法</h4>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl <span class="token punctuation">[</span>コマンド名<span class="token punctuation">]</span> <span class="token punctuation">[</span>サービス名<span class="token punctuation">]</span>
+</code></pre><table>
+<thead>
+<tr>
+<th>コマンド</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start</td>
+<td>サービス即時起動</td>
+</tr>
+<tr>
+<td>stop</td>
+<td>サービス停止</td>
+</tr>
+<tr>
+<td>restart</td>
+<td>サービス再起動</td>
+</tr>
+<tr>
+<td>status</td>
+<td>サービス状態確認</td>
+</tr>
+<tr>
+<td>enable</td>
+<td>サービス自動起動</td>
+</tr>
+<tr>
+<td>disable</td>
+<td>サービス自動起動無効</td>
+</tr>
+<tr>
+<td>is-active</td>
+<td>サービス起動中か確認</td>
+</tr>
+<tr>
+<td>is-enable</td>
+<td>サービス自動起動設定か確認</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h2 id="2apacheの設定">2．Apacheの設定 </h2>
+<h3 id="情報確認">情報確認 </h3>
+<p>次のコマンドを入力し，必要な情報を確認する</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">ls</span> <span class="token parameter variable">-l</span> /var/www/
 </code></pre><ul>
-<li>パスワード設定，匿名ユーザー削除，リモートログイン制限，テストDB削除などを設定できます．</li>
-<li>対話形式で安全に初期設定を行えるコマンド</li>
+<li><code>ls</code>：ファイルやディレクトリを一覧表示する</li>
+<li><code>-l</code>：ロング形式のこと．詳細情報を表示する</li>
+<li><code>/var/www/</code>：対象ディレクトリ．多くのLinux環境ではWebサーバのドキュメントルートがここに存在する</li>
+<li><strong>※ドキュメントルート</strong> ：WebページのHTML,CSS，画像などを配置する場所．ドキュメントルート以下のファイルだけが外部に公開される</li>
+</ul>
+<h3 id="アクセス制御パーミッション">アクセス制御（パーミッション） </h3>
+<p>上のコマンドを入力すると，メッセージが返ってくる．その際にそのフォルダのアクセス権限が確認できる．</p>
+<h3 id="表示されるアクセス権限の読み方">表示されるアクセス権限の読み方 </h3>
+<p>例えば以下のような表示があったとします：</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>drwxr-xr-x  <span class="token number">2</span> root root <span class="token number">4096</span> Apr <span class="token number">10</span> <span class="token number">12</span>:00 html
+</code></pre><table>
+<thead>
+<tr>
+<th>部分</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>d</td>
+<td>ディレクトリ</td>
+</tr>
+<tr>
+<td>rwx</td>
+<td>所有者（この場合root）の権限．read,write,x（実行）のこと</td>
+</tr>
+<tr>
+<td>r-x</td>
+<td>グループ（この場合root）の権限，read,xのみ</td>
+</tr>
+<tr>
+<td>2</td>
+<td>リンク数（このディレクトリに何個のリンクがあるか）</td>
+</tr>
+<tr>
+<td>root</td>
+<td>所有者</td>
+</tr>
+<tr>
+<td>root</td>
+<td>グループ</td>
+</tr>
+<tr>
+<td>4096</td>
+<td>ファイルサイズ</td>
+</tr>
+<tr>
+<td>Apr 10 12:00</td>
+<td>最終更新日時</td>
+</tr>
+<tr>
+<td>html</td>
+<td>ディレクトリ名</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-apacheの自動起動設定">3. Apacheの自動起動設定 </h2>
+<h3 id="起動時に自動的にapacheが立ち上がるようにする">起動時に自動的にApacheが立ち上がるようにする </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> httpd
+</code></pre><h3 id="自動起動設定の確認">自動起動設定の確認 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl is-enabled httpd
+</code></pre><ul>
+<li><code>enabled</code> と表示されればOK</li>
 </ul>
 <hr>
-<h2 id="3-phpmyadminのインストール">3. phpMyAdminのインストール </h2>
-<h3 id="epelリポジトリの有効化とインストール">EPELリポジトリの有効化とインストール </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> epel-release
-<span class="token function">sudo</span> dnf <span class="token function">install</span> <span class="token parameter variable">-y</span> phpMyAdmin
-</code></pre><br>
-<h3 id="apache設定ファイルの編集アクセス許可">Apache設定ファイルの編集（アクセス許可） </h3>
-<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">nano</span> /etc/httpd/conf.d/phpMyAdmin.conf
+<h2 id="4-ファイアウォールの設定必要な場合">4. ファイアウォールの設定（必要な場合） </h2>
+<p>Amazon Linux 2023では、<code>firewalld</code> はデフォルトで無効になっている場合もありますが、もし有効な場合はポートの開放が必要です。</p>
+<h3 id="httpポート80の開放">HTTP（ポート80）の開放 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--permanent</span> --add-service<span class="token operator">=</span>http
+<span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--reload</span>
+</code></pre><h3 id="httpsポート443の開放sslを使用する場合">HTTPS（ポート443）の開放（SSLを使用する場合） </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--permanent</span> --add-service<span class="token operator">=</span>https
+<span class="token function">sudo</span> firewall-cmd <span class="token parameter variable">--reload</span>
+</code></pre><hr>
+<h2 id="5-webサーバの動作確認">5. Webサーバの動作確認 </h2>
+<p>ブラウザを開いて以下のようにアクセスします：</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>http://[自分のEC2インスタンスのパブリックIPアドレス]/
+</code></pre><p>Apacheの初期ページ（例："Amazon Linux Apache test page"）が表示されれば成功です。</p>
+<hr>
+<h2 id="6-トラブルシューティング基本">6. トラブルシューティング（基本） </h2>
+<h3 id="apacheが起動しない動作しないとき">Apacheが起動しない・動作しないとき </h3>
+<p>以下のコマンドでログを確認：</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> journalctl <span class="token parameter variable">-u</span> httpd
+</code></pre><h3 id="状態を確認">状態を確認 </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl status httpd
+</code></pre><p>エラーが表示されている場合は、その内容をもとに対応する必要があります。</p>
+<hr>
+<h2 id="7-よく使う便利コマンド">7. よく使う便利コマンド </h2>
+<table>
+<thead>
+<tr>
+<th>コマンド</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cd</code></td>
+<td>ディレクトリ移動</td>
+</tr>
+<tr>
+<td><code>ls -l</code></td>
+<td>ファイル・ディレクトリの詳細表示</td>
+</tr>
+<tr>
+<td><code>pwd</code></td>
+<td>現在のディレクトリを表示</td>
+</tr>
+<tr>
+<td><code>mkdir</code></td>
+<td>ディレクトリ作成</td>
+</tr>
+<tr>
+<td><code>rm</code></td>
+<td>ファイル削除</td>
+</tr>
+<tr>
+<td><code>rm -r</code></td>
+<td>ディレクトリを中身ごと削除</td>
+</tr>
+<tr>
+<td><code>cp</code></td>
+<td>ファイル・ディレクトリをコピー</td>
+</tr>
+<tr>
+<td><code>mv</code></td>
+<td>ファイル・ディレクトリを移動または名前変更</td>
+</tr>
+<tr>
+<td><code>cat</code></td>
+<td>ファイルの中身を表示</td>
+</tr>
+<tr>
+<td><code>nano</code></td>
+<td>簡易テキストエディタ（初心者向け）</td>
+</tr>
+<tr>
+<td><code>vim</code></td>
+<td>高機能なテキストエディタ（中級者以上向け）</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="補足ドキュメントルートを変更したい場合">補足：ドキュメントルートを変更したい場合 </h2>
+<p>設定ファイル <code>/etc/httpd/conf/httpd.conf</code> を編集することでドキュメントルートの変更が可能です。</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> <span class="token function">nano</span> /etc/httpd/conf/httpd.conf
 </code></pre><ul>
-<li><code>Require ip 127.0.0.1</code> や <code>Allow from 127.0.0.1</code> を <code>Require all granted</code> に変更することで外部からのアクセスを許可できる<br>
-<br></li>
+<li><code>DocumentRoot "/var/www/html"</code> の箇所を変更し、同様に <code>&lt;Directory "/var/www/html"&gt;</code> も一致させて変更します。</li>
+<li>編集後はApacheを再起動：</li>
 </ul>
-<h3 id="apacheの再起動">Apacheの再起動 </h3>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">sudo</span> systemctl restart httpd
 </code></pre><hr>
-<h2 id="4-phpmyadminへログイン">4. phpMyAdminへログイン </h2>
-<ul>
-<li>ブラウザで以下にアクセス：</li>
-</ul>
-<pre data-role="codeBlock" data-info="" class="language-text"><code>http://[EC2のパブリックIP]/phpMyAdmin
-</code></pre><ul>
-<li>
-<p>MariaDBのユーザー名とパスワードを入力してログイン．</p>
-</li>
-<li>
-<p>ログインできれば，Apache・PHP・MariaDB・phpMyAdmin の連携確認は完了．</p>
-</li>
-</ul>
+<p>以上が基本的なLinux上でのApache Webサーバ構築手順です。</p>
 
       </div>
       
