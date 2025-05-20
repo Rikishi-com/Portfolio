@@ -178,7 +178,7 @@ resource <span class="token string">"aws_route"</span> <span class="token string
 </thead>
 <tbody>
 <tr>
-<td>cidr_block</td>
+<td>cidr_block *</td>
 <td>string</td>
 <td>VPCで使用するIPアドレス範囲をCIDR形式で指定する．</td>
 </tr>
@@ -225,7 +225,7 @@ resource <span class="token string">"aws_route"</span> <span class="token string
 </thead>
 <tbody>
 <tr>
-<td>vpc_id</td>
+<td>vpc_id *</td>
 <td>string</td>
 <td>紐付けるVPCのID．</td>
 </tr>
@@ -235,7 +235,7 @@ resource <span class="token string">"aws_route"</span> <span class="token string
 <td>作成するサブネットのアベイラビリティゾーン名．</td>
 </tr>
 <tr>
-<td>cidr_block</td>
+<td>cidr_block *</td>
 <td>string</td>
 <td>このサブネットで利用するCIDR形式のIP範囲．</td>
 </tr>
@@ -267,7 +267,7 @@ resource <span class="token string">"aws_route"</span> <span class="token string
 </thead>
 <tbody>
 <tr>
-<td>vpc_id</td>
+<td>vpc_id *</td>
 <td>string</td>
 <td>このルートテーブルが関連付けられるVPCのID．</td>
 </tr>
@@ -294,12 +294,12 @@ resource <span class="token string">"aws_route"</span> <span class="token string
 </thead>
 <tbody>
 <tr>
-<td>route_table_id</td>
+<td>route_table_id *</td>
 <td>string</td>
 <td>紐付けるルートテーブルのID．</td>
 </tr>
 <tr>
-<td>subnet_id</td>
+<td>subnet_id *</td>
 <td>string</td>
 <td>関連付ける対象のサブネットID．</td>
 </tr>
@@ -348,17 +348,17 @@ resource <span class="token string">"aws_route"</span> <span class="token string
 </thead>
 <tbody>
 <tr>
-<td>route_table_id</td>
+<td>route_table_id *</td>
 <td>string</td>
 <td>ルートを追加する対象のルートテーブルID．</td>
 </tr>
 <tr>
-<td>destination_cidr_block</td>
+<td>destination_cidr_block *</td>
 <td>string</td>
 <td>このルートで対象とする通信先のCIDR範囲．</td>
 </tr>
 <tr>
-<td>gateway_id</td>
+<td>gateway_id *</td>
 <td>string</td>
 <td>インターネットゲートウェイなど，通信先に到達するためのゲートウェイID．</td>
 </tr>

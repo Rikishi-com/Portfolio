@@ -233,6 +233,7 @@ resource <span class="token string">"aws_security_group_rule"</span> <span class
 </tr>
 </tbody>
 </table>
+<p>※全てオプションのため設定がなければTerraformはランダムを入力</p>
 <br>
 <h2 id="セキュリティグループルール作成">セキュリティグループルール作成 </h2>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>resource <span class="token string">"aws_security_group_rule"</span> <span class="token string">"RESOURCE_NAME"</span> <span class="token punctuation">{</span>
@@ -248,27 +249,27 @@ resource <span class="token string">"aws_security_group_rule"</span> <span class
 </thead>
 <tbody>
 <tr>
-<td>security_group_id</td>
+<td>security_group_id *</td>
 <td>string</td>
 <td>セキュリティグループID</td>
 </tr>
 <tr>
-<td>type</td>
+<td>type *</td>
 <td>enum</td>
 <td>ingress（インバウンド）,egress（アウトバウンド）</td>
 </tr>
 <tr>
-<td>protocol</td>
+<td>protocol *</td>
 <td>enum</td>
 <td>"tcp","udp","icmp"など</td>
 </tr>
 <tr>
-<td>from_port</td>
+<td>from_port *</td>
 <td>number</td>
 <td>開始ポート番号，もしくは開始ICMP番号</td>
 </tr>
 <tr>
-<td>to_port</td>
+<td>to_port *</td>
 <td>number</td>
 <td>終了ポート番号，もしくは終了ICMP番号</td>
 </tr>
