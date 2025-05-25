@@ -1,0 +1,494 @@
+<!DOCTYPE html><html><head>
+      <title>RDS</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:////Users/yuki/.vscode/extensions/shd101wyy.markdown-preview-enhanced-0.8.18/crossnote/dependencies/katex/katex.min.css">
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script></head><body for="html-export">
+    
+    
+      <div class="crossnote markdown-preview  ">
+      
+<h1 id="terraformでrds構築">TerraformでRDS構築 </h1>
+<h2 id="今回作成したコード">今回作成したコード </h2>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token comment"># パラメータグループ</span>
+resource <span class="token string">"aws_db_parameter_group"</span> <span class="token string">"mysql_standalone_parameter_group"</span> <span class="token punctuation">{</span>
+  name        <span class="token operator">=</span> <span class="token string">"<span class="token variable">${var.project}</span>-mysql-standalone-parameter-group"</span>
+  family      <span class="token operator">=</span> <span class="token string">"mysql8.0"</span> <span class="token comment"># 使用するMySQLのバージョンに合わせて変更</span>
+  description <span class="token operator">=</span> <span class="token string">"MySQL parameter group for <span class="token variable">${var.project}</span> in <span class="token variable">${var.environment}</span>"</span>
+
+  parameter <span class="token punctuation">{</span>
+    name  <span class="token operator">=</span> <span class="token string">"character_set_database"</span>
+    value <span class="token operator">=</span> <span class="token string">"utf8mb4"</span> <span class="token comment"># デフォルトの文字セットをutf8mb4に設定</span>
+  <span class="token punctuation">}</span>
+
+  parameter <span class="token punctuation">{</span>
+    name  <span class="token operator">=</span> <span class="token string">"character_set_server"</span>
+    value <span class="token operator">=</span> <span class="token string">"utf8mb4"</span> <span class="token comment"># デフォルトの文字セットをutf8mb4に設定</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment"># オプショングループ</span>
+resource <span class="token string">"aws_db_option_group"</span> <span class="token string">"mysql_standalone_option_group"</span> <span class="token punctuation">{</span>
+  name                 <span class="token operator">=</span> <span class="token string">"<span class="token variable">${var.project}</span>-mysql-standalone-option-group"</span>
+  engine_name          <span class="token operator">=</span> <span class="token string">"mysql"</span>
+  major_engine_version <span class="token operator">=</span> <span class="token string">"8.0"</span> <span class="token comment"># 使用するMySQLのバージョンに合わせて変更</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment"># サブネットグループ</span>
+resource <span class="token string">"aws_db_subnet_group"</span> <span class="token string">"mysql_standalone_subnet_group"</span> <span class="token punctuation">{</span>
+  name       <span class="token operator">=</span> <span class="token string">"<span class="token variable">${var.project}</span>-mysql-standalone-subnet-group"</span>
+  subnet_ids <span class="token operator">=</span> <span class="token punctuation">[</span>
+    aws_subnet.private_subnet_1a.id,
+    aws_subnet.private_subnet_1c.id
+  <span class="token punctuation">]</span>
+
+  tags <span class="token operator">=</span> <span class="token punctuation">{</span>
+    Name    <span class="token operator">=</span> <span class="token string">"<span class="token variable">${var.project}</span>-mysql-standalone-subnet-group"</span>
+    Project <span class="token operator">=</span> var.project
+    Env     <span class="token operator">=</span> var.environment
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment"># ランダムなパスワード生成</span>
+resource <span class="token string">"random_string"</span> <span class="token string">"db_password"</span> <span class="token punctuation">{</span>
+  length  <span class="token operator">=</span> <span class="token number">16</span>
+  special <span class="token operator">=</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment"># RDSインスタンス</span>
+resource <span class="token string">"aws_db_instance"</span> <span class="token string">"mysql_standalone"</span> <span class="token punctuation">{</span>
+  identifier              <span class="token operator">=</span> <span class="token string">"<span class="token variable">${var.project}</span>-mysql-standalone"</span>
+
+  engine                 <span class="token operator">=</span> <span class="token string">"mysql"</span>
+  engine_version         <span class="token operator">=</span> <span class="token string">"8.0.42"</span> <span class="token comment"># 使用するMySQLのバージョンに合わせて変更</span>
+
+  instance_class         <span class="token operator">=</span> <span class="token string">"db.t3.micro"</span> <span class="token comment"># インスタンスのクラスを指定</span>
+
+  allocated_storage       <span class="token operator">=</span> <span class="token number">20</span>  <span class="token comment"># ストレージサイズを指定</span>
+  max_allocated_storage   <span class="token operator">=</span> <span class="token number">50</span>  <span class="token comment"># 最大ストレージサイズを指定</span>
+  storage_type            <span class="token operator">=</span> <span class="token string">"gp2"</span> <span class="token comment"># ストレージタイプを指定</span>
+  storage_encrypted       <span class="token operator">=</span> <span class="token boolean">false</span> <span class="token comment"># ストレージを暗号化</span>
+
+  multi_az               <span class="token operator">=</span> <span class="token boolean">false</span> <span class="token comment"># マルチAZ配置を無効にする</span>
+  availability_zone      <span class="token operator">=</span> <span class="token string">"ap-northeast-1a"</span> <span class="token comment"># アベイラビリティゾーンを指定</span>
+
+  db_subnet_group_name   <span class="token operator">=</span> aws_db_subnet_group.mysql_standalone_subnet_group.name <span class="token comment"># サブネットグループを指定</span>
+  vpc_security_group_ids <span class="token operator">=</span> <span class="token punctuation">[</span>aws_security_group.db_sg.id<span class="token punctuation">]</span> <span class="token comment"># セキュリティグループを指定</span>
+  publicly_accessible    <span class="token operator">=</span> <span class="token boolean">false</span>
+  port                   <span class="token operator">=</span> <span class="token number">3306</span> <span class="token comment"># MySQLのデフォルトポートを指定</span>
+
+  parameter_group_name <span class="token operator">=</span> aws_db_parameter_group.mysql_standalone_parameter_group.name <span class="token comment"># パラメータグループを指定</span>
+  option_group_name    <span class="token operator">=</span> aws_db_option_group.mysql_standalone_option_group.name   <span class="token comment"># オプショングループを指定</span>
+
+  username                <span class="token operator">=</span> var.db_username            <span class="token comment"># ユーザー名を指定</span>
+  password                <span class="token operator">=</span> random_string.db_password.result <span class="token comment"># パスワードをランダムに生成したものを使用</span>
+  db_name                 <span class="token operator">=</span> var.db_name
+
+  backup_window           <span class="token operator">=</span> <span class="token string">"04:00-05:00"</span> <span class="token comment"># バックアップウィンドウを指定</span>
+  backup_retention_period <span class="token operator">=</span> <span class="token number">7</span>             <span class="token comment"># バックアップ保持期間を指定</span>
+
+  maintenance_window         <span class="token operator">=</span> <span class="token string">"Mon:05:00-Mon:08:00"</span> <span class="token comment"># メンテナンスウィンドウを指定</span>
+  auto_minor_version_upgrade <span class="token operator">=</span> <span class="token boolean">false</span>        <span class="token comment"># 自動でマイナーバージョンをアップグレードするか</span>
+
+  deletion_protection     <span class="token operator">=</span> <span class="token boolean">false</span> <span class="token comment"># 削除保護を有効にする</span>
+  skip_final_snapshot     <span class="token operator">=</span> <span class="token boolean">true</span>  <span class="token comment"># 最終スナップショットを取得するか</span>
+
+  apply_immediately       <span class="token operator">=</span> <span class="token boolean">true</span>  <span class="token comment"># 変更を即時適用する</span>
+
+  tags <span class="token operator">=</span> <span class="token punctuation">{</span>
+    Name    <span class="token operator">=</span> <span class="token string">"<span class="token variable">${var.project}</span>-mysql-standalone"</span>
+    Project <span class="token operator">=</span> var.project
+    Env     <span class="token operator">=</span> var.environment
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><hr>
+<h1 id="パラメータグループ">パラメータグループ </h1>
+<h3 id="作成したコード">作成したコード </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token comment"># パラメータグループ</span>
+resource <span class="token string">"aws_db_parameter_group"</span> <span class="token string">"mysql_standalone_parameter_group"</span> <span class="token punctuation">{</span>
+  name        <span class="token operator">=</span> <span class="token string">"<span class="token variable">${var.project}</span>-mysql-standalone-parameter-group"</span>
+  family      <span class="token operator">=</span> <span class="token string">"mysql8.0"</span> <span class="token comment"># 使用するMySQLのバージョンに合わせて変更</span>
+  description <span class="token operator">=</span> <span class="token string">"MySQL parameter group for <span class="token variable">${var.project}</span> in <span class="token variable">${var.environment}</span>"</span>
+
+  parameter <span class="token punctuation">{</span>
+    name  <span class="token operator">=</span> <span class="token string">"character_set_database"</span>
+    value <span class="token operator">=</span> <span class="token string">"utf8mb4"</span> <span class="token comment"># デフォルトの文字セットをutf8mb4に設定</span>
+  <span class="token punctuation">}</span>
+
+  parameter <span class="token punctuation">{</span>
+    name  <span class="token operator">=</span> <span class="token string">"character_set_server"</span>
+    value <span class="token operator">=</span> <span class="token string">"utf8mb4"</span> <span class="token comment"># デフォルトの文字セットをutf8mb4に設定</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre><h2 id="aws_db_parameter_group">aws_db_parameter_group </h2>
+<p>MySQL用のパラメータグループを定義するリソースです。パラメータ名と値を細かく制御できます。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>型</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name *</td>
+<td>string</td>
+<td>パラメータグループの名前</td>
+</tr>
+<tr>
+<td>family *</td>
+<td>string</td>
+<td>MySQLのバージョンに対応するファミリー</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>リソースの説明文</td>
+</tr>
+<tr>
+<td>parameter *</td>
+<td>block</td>
+<td>個別パラメータ(name, value)の設定</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="オプショングループ">オプショングループ </h1>
+<h3 id="作成したコード-1">作成したコード </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token comment">#オプショングループ</span>
+resource <span class="token string">"aws_db_option_group"</span> <span class="token string">"mysql_standalone_option_group"</span> <span class="token punctuation">{</span>
+  name                 <span class="token operator">=</span> <span class="token string">"<span class="token variable">${var.project}</span>-mysql-standalone-option-group"</span>
+  engine_name          <span class="token operator">=</span> <span class="token string">"mysql"</span>
+  major_engine_version <span class="token operator">=</span> <span class="token string">"8.0"</span> <span class="token comment"># 使用するMySQLのバージョンに合わせて変更</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="aws_db_option_group">aws_db_option_group </h2>
+<p>RDSのオプショングループを定義するリソースです。データベースエンジンの追加機能を管理できます。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>型</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name *</td>
+<td>string</td>
+<td>オプショングループの名前</td>
+</tr>
+<tr>
+<td>engine_name *</td>
+<td>string</td>
+<td>エンジン名(mysql等)</td>
+</tr>
+<tr>
+<td>major_engine_version *</td>
+<td>string</td>
+<td>対象となるエンジンのバージョン</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="サブネットグループ">サブネットグループ </h1>
+<h2 id="作成したコード-2">作成したコード </h2>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token comment"># サブネットグループ</span>
+resource <span class="token string">"aws_db_subnet_group"</span> <span class="token string">"mysql_standalone_subnet_group"</span> <span class="token punctuation">{</span>
+  name       <span class="token operator">=</span> <span class="token string">"<span class="token variable">${var.project}</span>-mysql-standalone-subnet-group"</span>
+  subnet_ids <span class="token operator">=</span> <span class="token punctuation">[</span>
+    aws_subnet.private_subnet_1a.id,
+    aws_subnet.private_subnet_1c.id
+  <span class="token punctuation">]</span>
+
+  tags <span class="token operator">=</span> <span class="token punctuation">{</span>
+    Name    <span class="token operator">=</span> <span class="token string">"<span class="token variable">${var.project}</span>-mysql-standalone-subnet-group"</span>
+    Project <span class="token operator">=</span> var.project
+    Env     <span class="token operator">=</span> var.environment
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="aws_db_subnet_group">aws_db_subnet_group </h2>
+<p>RDSインスタンスが配置されるサブネットグループを定義するリソースです。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>型</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name *</td>
+<td>string</td>
+<td>サブネットグループの名前</td>
+</tr>
+<tr>
+<td>subnet_ids *</td>
+<td>list(string)</td>
+<td>属するサブネットのIDリスト</td>
+</tr>
+<tr>
+<td>tags *</td>
+<td>map(string)</td>
+<td>リソースに付与するタグ</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="ランダムパスワード">ランダムパスワード </h1>
+<h2 id="作成したコード-3">作成したコード </h2>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token comment"># ランダムなパスワード生成</span>
+resource <span class="token string">"random_string"</span> <span class="token string">"db_password"</span> <span class="token punctuation">{</span>
+  length  <span class="token operator">=</span> <span class="token number">16</span>
+  special <span class="token operator">=</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="random_stringdb_password">random_string.db_password </h2>
+<p>RDS用のパスワードをランダムに生成するリソースです。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>型</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>length *</td>
+<td>number</td>
+<td>生成する文字列の長さ</td>
+</tr>
+<tr>
+<td>special</td>
+<td>bool</td>
+<td>特殊文字を含めるかどうか</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h1 id="rdsインスタンス">RDSインスタンス </h1>
+<h2 id="作成したコード-4">作成したコード </h2>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token comment"># RDSインスタンス</span>
+resource <span class="token string">"aws_db_instance"</span> <span class="token string">"mysql_standalone"</span> <span class="token punctuation">{</span>
+  identifier              <span class="token operator">=</span> <span class="token string">"<span class="token variable">${var.project}</span>-mysql-standalone"</span>
+
+  engine                 <span class="token operator">=</span> <span class="token string">"mysql"</span>
+  engine_version         <span class="token operator">=</span> <span class="token string">"8.0.42"</span> <span class="token comment"># 使用するMySQLのバージョンに合わせて変更</span>
+
+  instance_class         <span class="token operator">=</span> <span class="token string">"db.t3.micro"</span> <span class="token comment"># インスタンスのクラスを指定</span>
+
+  allocated_storage       <span class="token operator">=</span> <span class="token number">20</span>  <span class="token comment"># ストレージサイズを指定</span>
+  max_allocated_storage   <span class="token operator">=</span> <span class="token number">50</span>  <span class="token comment"># 最大ストレージサイズを指定</span>
+  storage_type            <span class="token operator">=</span> <span class="token string">"gp2"</span> <span class="token comment"># ストレージタイプを指定</span>
+  storage_encrypted       <span class="token operator">=</span> <span class="token boolean">false</span> <span class="token comment"># ストレージを暗号化</span>
+
+  multi_az               <span class="token operator">=</span> <span class="token boolean">false</span> <span class="token comment"># マルチAZ配置を無効にする</span>
+  availability_zone      <span class="token operator">=</span> <span class="token string">"ap-northeast-1a"</span> <span class="token comment"># アベイラビリティゾーンを指定</span>
+
+  db_subnet_group_name   <span class="token operator">=</span> aws_db_subnet_group.mysql_standalone_subnet_group.name <span class="token comment"># サブネットグループを指定</span>
+  vpc_security_group_ids <span class="token operator">=</span> <span class="token punctuation">[</span>aws_security_group.db_sg.id<span class="token punctuation">]</span> <span class="token comment"># セキュリティグループを指定</span>
+  publicly_accessible    <span class="token operator">=</span> <span class="token boolean">false</span>
+  port                   <span class="token operator">=</span> <span class="token number">3306</span> <span class="token comment"># MySQLのデフォルトポートを指定</span>
+
+  parameter_group_name <span class="token operator">=</span> aws_db_parameter_group.mysql_standalone_parameter_group.name <span class="token comment"># パラメータグループを指定</span>
+  option_group_name    <span class="token operator">=</span> aws_db_option_group.mysql_standalone_option_group.name   <span class="token comment"># オプショングループを指定</span>
+
+  username                <span class="token operator">=</span> var.db_username            <span class="token comment"># ユーザー名を指定</span>
+  password                <span class="token operator">=</span> random_string.db_password.result <span class="token comment"># パスワードをランダムに生成したものを使用</span>
+  db_name                 <span class="token operator">=</span> var.db_name
+
+  backup_window           <span class="token operator">=</span> <span class="token string">"04:00-05:00"</span> <span class="token comment"># バックアップウィンドウを指定</span>
+  backup_retention_period <span class="token operator">=</span> <span class="token number">7</span>             <span class="token comment"># バックアップ保持期間を指定</span>
+
+  maintenance_window         <span class="token operator">=</span> <span class="token string">"Mon:05:00-Mon:08:00"</span> <span class="token comment"># メンテナンスウィンドウを指定</span>
+  auto_minor_version_upgrade <span class="token operator">=</span> <span class="token boolean">false</span>        <span class="token comment"># 自動でマイナーバージョンをアップグレードするか</span>
+
+  deletion_protection     <span class="token operator">=</span> <span class="token boolean">false</span> <span class="token comment"># 削除保護を有効にする</span>
+  skip_final_snapshot     <span class="token operator">=</span> <span class="token boolean">true</span>  <span class="token comment"># 最終スナップショットを取得するか</span>
+
+  apply_immediately       <span class="token operator">=</span> <span class="token boolean">true</span>  <span class="token comment"># 変更を即時適用する</span>
+
+  tags <span class="token operator">=</span> <span class="token punctuation">{</span>
+    Name    <span class="token operator">=</span> <span class="token string">"<span class="token variable">${var.project}</span>-mysql-standalone"</span>
+    Project <span class="token operator">=</span> var.project
+    Env     <span class="token operator">=</span> var.environment
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><h2 id="aws_db_instance">aws_db_instance </h2>
+<p>RDSインスタンスを作成するメインリソースです。インスタンスサイズやストレージ、可用性などを設定します。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>型</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>identifier *</td>
+<td>string</td>
+<td>RDSインスタンス識別子</td>
+</tr>
+<tr>
+<td>engine *</td>
+<td>string</td>
+<td>データベースエンジン名</td>
+</tr>
+<tr>
+<td>engine_version</td>
+<td>string</td>
+<td>エンジンのバージョン</td>
+</tr>
+<tr>
+<td>instance_class *</td>
+<td>string</td>
+<td>インスタンスタイプ</td>
+</tr>
+<tr>
+<td>allocated_storage *</td>
+<td>number</td>
+<td>初期ストレージサイズ(GB)</td>
+</tr>
+<tr>
+<td>max_allocated_storage</td>
+<td>number</td>
+<td>自動増加時の最大ストレージサイズ(GB)</td>
+</tr>
+<tr>
+<td>storage_type</td>
+<td>string</td>
+<td>ストレージタイプ</td>
+</tr>
+<tr>
+<td>storage_encrypted</td>
+<td>bool</td>
+<td>ストレージ暗号化の有無</td>
+</tr>
+<tr>
+<td>multi_az</td>
+<td>bool</td>
+<td>マルチAZ配置の有無</td>
+</tr>
+<tr>
+<td>availability_zone</td>
+<td>string</td>
+<td>配置先AZ</td>
+</tr>
+<tr>
+<td>db_subnet_group_name</td>
+<td>string</td>
+<td>サブネットグループ名</td>
+</tr>
+<tr>
+<td>vpc_security_group_ids</td>
+<td>list(string)</td>
+<td>紐付けるセキュリティグループのID</td>
+</tr>
+<tr>
+<td>publicly_accessible</td>
+<td>bool</td>
+<td>パブリックアクセスの可否</td>
+</tr>
+<tr>
+<td>port</td>
+<td>number</td>
+<td>データベースポート番号</td>
+</tr>
+<tr>
+<td>parameter_group_name</td>
+<td>string</td>
+<td>適用するパラメータグループ名</td>
+</tr>
+<tr>
+<td>option_group_name</td>
+<td>string</td>
+<td>適用するオプショングループ名</td>
+</tr>
+<tr>
+<td>username</td>
+<td>string</td>
+<td>管理者ユーザー名</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td>管理者パスワード</td>
+</tr>
+<tr>
+<td>db_name</td>
+<td>string</td>
+<td>初期データベース名</td>
+</tr>
+<tr>
+<td>backup_window</td>
+<td>string</td>
+<td>バックアップ実行ウィンドウ</td>
+</tr>
+<tr>
+<td>backup_retention_period</td>
+<td>number</td>
+<td>バックアップ保持期間(日数)</td>
+</tr>
+<tr>
+<td>maintenance_window</td>
+<td>string</td>
+<td>メンテナンスウィンドウ</td>
+</tr>
+<tr>
+<td>auto_minor_version_upgrade</td>
+<td>bool</td>
+<td>マイナーバージョン自動アップグレードの有無</td>
+</tr>
+<tr>
+<td>deletion_protection</td>
+<td>bool</td>
+<td>削除保護の有無</td>
+</tr>
+<tr>
+<td>skip_final_snapshot</td>
+<td>bool</td>
+<td>削除時のスナップショット作成の有無</td>
+</tr>
+<tr>
+<td>apply_immediately</td>
+<td>bool</td>
+<td>変更の即時適用の有無</td>
+</tr>
+<tr>
+<td>tags</td>
+<td>map(string)</td>
+<td>リソースに付与するタグ</td>
+</tr>
+</tbody>
+</table>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
